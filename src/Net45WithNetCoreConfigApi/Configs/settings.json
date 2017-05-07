@@ -1,0 +1,25 @@
+{
+  "mailing": {
+    "mailing": {
+      "batchSize": 15,
+      "batchDelay": 1 
+    },
+    "feed": {
+      "isActive": true,
+      "endpoints": [
+        {
+          "name": "Twitter",
+          "url": "https://api.twitter.com"
+        },
+        {
+          "name": "Youtube",
+          "url": "https://api.youtube.com"
+        },
+        {
+          "name": "Facebook",
+          "url": "https://api.facebook.com"
+        }
+      ]
+    }
+  }
+}
