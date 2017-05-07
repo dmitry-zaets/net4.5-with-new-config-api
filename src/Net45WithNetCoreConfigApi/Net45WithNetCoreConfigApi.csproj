@@ -208,6 +208,7 @@
     <Compile Include="Configurations\Feed\FeedOptions.cs" />
     <Compile Include="Configurations\Mailing\MailingOptions.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Extensions\ConfigurationSetupExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
