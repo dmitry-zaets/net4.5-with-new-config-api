@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Autofac;
 using Autofac.Integration.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace Net45WithNetCoreConfigApi
 {
@@ -14,6 +16,13 @@ namespace Net45WithNetCoreConfigApi
     {
         protected void Application_Start()
         {
+
+            var configurationBuilder = new ConfigurationBuilder()
+                .SetBasePath(Path.Combine(HttpRuntime.AppDomainAppPath, "configs"))
+                .AddJsonFile("settings.json");
+
+            var config = configurationBuilder.Build();
+
             var builder = new ContainerBuilder();
 
             builder.RegisterControllers(typeof(WebApiApplication).Assembly);
