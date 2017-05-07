@@ -9,6 +9,9 @@ using System.Web.Routing;
 using Autofac;
 using Autofac.Integration.Mvc;
 using Microsoft.Extensions.Configuration;
+using Net45WithNetCoreConfigApi.Extensions;
+using Net45WithNetCoreConfigApi.Configurations.Mailing;
+using Net45WithNetCoreConfigApi.Configurations.Feed;
 
 namespace Net45WithNetCoreConfigApi
 {
@@ -19,16 +22,18 @@ namespace Net45WithNetCoreConfigApi
 
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(Path.Combine(HttpRuntime.AppDomainAppPath, "configs"))
-                .AddJsonFile("settings.json");
+                .AddJsonFile("settings.json", optional: false, reloadOnChange: true);
 
-            var config = configurationBuilder.Build();
+            var configuration = configurationBuilder.Build();
 
             var builder = new ContainerBuilder();
+            builder.RegisterOptions();
+
+            builder.RegisterConfigurationOptions<MailingOptions>(configuration.GetSection("mailing"));
+            builder.RegisterConfigurationOptions<FeedOptions>(configuration.GetSection("feed"));
 
             builder.RegisterControllers(typeof(WebApiApplication).Assembly);
             builder.RegisterModule<AutofacWebTypesModule>();
-
-            builder.Register(_ => new DiTestClass { Name ="My name"}).As<DiTestClass>();
 
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
@@ -36,10 +41,5 @@ namespace Net45WithNetCoreConfigApi
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }
-    }
-
-    public class DiTestClass
-    {
-        public string Name { get; set; }
     }
 }
